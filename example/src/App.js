@@ -10,7 +10,8 @@ import {
   InputDate,
   InputTime,
   InputTag,
-  InputNumber
+  InputNumber,
+  InputSelect
 } from 'react-native-tcomponent';
 
 import { connect } from 'react-redux';
@@ -144,7 +145,61 @@ class Content extends React.Component {
           <InputNumber name="numOnly" numberOnly />
 
         </View>
+        
       </View>
+      <Text>Input Select</Text>
+      <InputSelect
+      name="picker"
+        options={[
+          { id: '1', nama: 'Disetujui' },
+          { id: '2', nama: 'Ditolak' },
+          { id: '3', nama: 'Menunggu Persetujuan' },
+        ]}
+        inputStyle={{
+          borderWidth:1,
+          borderColor: '#cccccc',
+          margin: 10,
+          borderRadius: 10,
+        }}
+        placeholderStyle={{
+          fontSize: 16,
+          color: '#cccccc'
+        }}
+        labelStyle={{
+          fontSize: 16,
+          color: '#831dfe'
+        }}
+        cardStyle={{
+          borderRadius: 10
+        }}
+        itemStyle={{
+          padding: 10,
+          fontSize: 16,
+          borderBottomWidth: 1,
+          borderBottomColor: '#cccccc'
+        }}
+        />
+
+
+        <Text>Input Select Readonly</Text>
+        <InputSelect
+        isReadonly
+        options={[
+          { id: '1', nama: 'Disetujui' },
+          { id: '2', nama: 'Ditolak' },
+          { id: '3', nama: 'Menunggu Persetujuan' },
+        ]}
+        inputStyle={{
+          borderWidth:1,
+          borderColor: '#cccccc',
+          margin: 10,
+          borderRadius: 10,
+          flex: 1
+        }}
+        placeholderStyle={{
+          fontSize: 16,
+          color: '#831dfe'
+        }}/>
       </ScrollView>
     );
   }

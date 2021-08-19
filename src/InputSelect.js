@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 
-import { TextInput, Text } from 'react-native';
+import { 
+  TextInput, 
+  Text,
+  View,
+  Modal,
+  TouchableOpacity,
+  StyleSheet
+} from 'react-native';
 
 import { isEmpty, isUndefined } from 'lodash';
 
@@ -12,68 +19,16 @@ class InputSelect extends Component {
   constructor(props) {
     super(props);
 
-    let default_placeholder = this.props.placeholder;
-
-    let option_summer = {};
-
-    let options_cleave = {};
-
-    let type = this.props.type ? String(this.props.type) : '';
-
-    if (type.toLowerCase() == 'nik') {
-      options_cleave = {
-        delimiter: ' ',
-        blocks: [2, 2, 2, 6, 4],
-        numericOnly: true,
-      };
-
-      default_placeholder =
-        this.props.placeholder || 'Nomor Induk Kependudukan';
-    } else if (type.toLowerCase() == 'kip') {
-      options_cleave = {
-        delimiter: ' ',
-        blocks: [4, 4, 4, 4],
-      };
-
-      default_placeholder = this.props.placeholder || 'Kartu Indonesia Pintar';
-    } else if (type.toLowerCase() == 'npwp') {
-      options_cleave = {
-        delimiters: ['.', '.', '.', '-', '.'],
-        blocks: [2, 3, 3, 1, 3, 3],
-        numericOnly: true,
-      };
-
-      default_placeholder = this.props.placeholder || 'Nomor Pokok Wajib Pajak';
-    } else if (type.toLowerCase() == 'postcode') {
-      options_cleave = {
-        blocks: [5],
-        delimiter: ' ',
-        numericOnly: true,
-      };
-
-      default_placeholder = this.props.placeholder || 'Kode Pos';
-    } else if (type.toLowerCase() == 'phone') {
-      /*
-      options_cleave = {
-        delimiter: ' ',
-        blocks: [4, 4, 4, 1],
-        numericOnly: true
-      }
-      */
-
-      default_placeholder = this.props.placeholder || 'Telepon';
-    }
-
-    type = type === 'text' || isUndefined(type) ? 'search' : type;
-
     this.state = {
-      height: 0,
-      type,
-      placeholder: default_placeholder,
-      options_cleave,
+      placeholder: this.props.placeholder ? this.props.placeholder : 'Pilih',
       value: this.props.value,
-      props_name: this.props.name ? slug(String(this.props.name), '_') : '',
+      props_name: this.props.name ? slug(String(this.props.name), '_') : 'select',
+      modalVisible: false
     };
+  }
+
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -100,54 +55,94 @@ class InputSelect extends Component {
   handleInputChange = (value) => {
     let data = value ? String(value) : '';
 
-    if (
-      this.state.type == 'nik' ||
-      this.state.type == 'kip' ||
-      this.state.type == 'npwp' ||
-      this.state.type == 'postcode'
-    ) {
-      data = data.replace(/\D/g, '');
-    }
-
-    if (this.props.maxlength) {
-      data = data.substring(0, this.props.maxlength);
-    }
-
     this.props.setInput(this.state.props_name, data);
 
     this.setState({ value: data });
-  };
-
-  onContentSizeChange = (event) => {
-    this.setState({ height: event.nativeEvent.contentSize.height });
+    this.setModalVisible(!this.state.modalVisible)
   };
 
   render() {
-    // console.log(this.props,this.state.value)
+    // console.log(this.state.value)
 
-    if (this.props.disabled || this.props.isReadonly) {
-      return <Text>{!isEmpty(this.state.value) && this.state.value}</Text>;
+    if (this.props.isReadonly) {
+      return (
+      <View style={[styles.row, this.props.inputStyle]}>
+        <Text>{!isEmpty(this.state.value) && this.state.value}</Text>
+      </View>);
     }
 
     let style = this.props.style;
 
-    let multiline = false;
-
-    if (this.props.isResizable) {
-      style = [
-        { ...this.props.style },
-        {
-          height: Math.min(80, Math.max(35, this.state.height)),
-        },
-      ];
-      multiline = true;
-    }
-
-    // console.log(this.state.props_name, this.state.height);
-
-    return <Text>Under Development</Text>;
+    return (
+      <View>
+        <Modal
+          animationType="fade"
+          transparent
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            this.setModalVisible(!this.state.modalVisible);
+          }}
+        >
+          <TouchableOpacity  
+          onPress={() => {
+            this.setModalVisible(!this.state.modalVisible);
+          }}
+          style={styles.outer}>
+            <View style={[styles.card, this.props.cardStyle]}>
+              {this.props.options.map((value) => (
+                <TouchableOpacity key={value.id} onPress={() => this.handleInputChange(value.nama)}>
+                  <Text style={this.props.itemStyle}>{value.nama}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
+        </Modal>
+        <TouchableOpacity
+          onPress={() => {
+            this.setModalVisible(!this.state.modalVisible);
+          }}
+          style={[styles.row, this.props.inputStyle]}
+          disabled={this.props.disabled}
+        >
+          {!isEmpty(this.state.value) ?
+          <Text style={this.props.labelStyle} >
+             {this.state.value}
+          </Text>
+          :
+          <Text style={this.props.placeholderStyle}>
+              {this.state.placeholder}
+          </Text>
+          }
+          {this.props.rightElement &&
+          <TouchableOpacity>
+            {this.props.rightElement}
+          </TouchableOpacity>
+          }
+        </TouchableOpacity>
+      </View>
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  outer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  card: {
+    zIndex: 1,
+    padding: 10,
+    backgroundColor: '#ffffff'
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10
+  },
+})
 
 const mapStateToProps = (state) => ({
   input: state.core.input || {},

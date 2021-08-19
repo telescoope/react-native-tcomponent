@@ -21,7 +21,7 @@
     "redux-logger": "3.0.6",
     "redux-persist": "6.0.0",
     "redux-thunk": "2.3.0",
-    "tcomponent": "git+https://github.com/telescoope/tcomponent"
+    "tcomponent": "git+https://github.com/telescoope/tcomponent.git"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
