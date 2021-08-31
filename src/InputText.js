@@ -159,6 +159,7 @@ class InputText extends Component {
         onChangeText={this.handleInputChange}
         numberOfLines={this.props.numberOfLines}
         name={this.state.props_name}
+        secureTextEntry={this.props.secureTextEntry}
       />
     );
   }

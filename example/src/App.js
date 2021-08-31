@@ -20,10 +20,19 @@ class Content extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      pass: false
+    };
 
     // this.open = debounce(this.open, 500);
   }
+
+  onPassword = () => {
+    this.setState({
+      pass: !this.state.pass
+    });
+  };
+
   render() {
     console.log('RENDER');
     return (
@@ -31,9 +40,14 @@ class Content extends React.Component {
       <View style={styles.container}>
         <Text>React Native Tcomponent</Text>
         <View>
-          <Text>InputText</Text>
+          <Text>InputTedddxt</Text>
           <InputText name="aldo" />
           <InputText name="aldo" isReadonly />
+          <InputText style={{ borderWidth: 2 }} name="password" placeholder="password" 
+          secureTextEntry={this.state.pass ? false : true}/>
+          <TouchableOpacity onPress={this.onPassword}>
+            <Text>{this.state.pass ? 'hide' : 'show'} password</Text>
+          </TouchableOpacity>
           <InputText style={{ borderWidth: 4 }} name="aldoresize" isResizable />
         </View>
         <View style={{ height: 120 }}>
