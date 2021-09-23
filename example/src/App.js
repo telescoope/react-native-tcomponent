@@ -41,7 +41,7 @@ class Content extends React.Component {
         <Text>React Native Tcomponent</Text>
         <View>
           <Text>InputTedddxt</Text>
-          <InputText name="aldo" />
+          <InputText name="aldo" autoCapitalize="none" />
           <InputText name="aldo" isReadonly />
           <InputText style={{ borderWidth: 2 }} name="password" placeholder="password" 
           secureTextEntry={this.state.pass ? false : true}/>

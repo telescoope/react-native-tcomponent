@@ -160,6 +160,7 @@ class InputText extends Component {
         numberOfLines={this.props.numberOfLines}
         name={this.state.props_name}
         secureTextEntry={this.props.secureTextEntry}
+        autoCapitalize={this.props.autoCapitalize}
       />
     );
   }
