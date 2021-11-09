@@ -165,9 +165,9 @@ class Content extends React.Component {
       <InputSelect
       name="picker"
         options={[
-          { id: '1', nama: 'Disetujui' },
-          { id: '2', nama: 'Ditolak' },
-          { id: '3', nama: 'Menunggu Persetujuan' },
+          { id: '1', name: 'Disetujui' },
+          { id: '2', name: 'Ditolak' },
+          { id: '3', name: 'Menunggu Persetujuan' },
         ]}
         inputStyle={{
           borderWidth:1,

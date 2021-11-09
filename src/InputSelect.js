@@ -31,33 +31,34 @@ class InputSelect extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    try {
-      if (
-        findArrayName(this.state.props_name, this.props.input) !=
-          findArrayName(this.state.props_name, prevProps.input) &&
-        findArrayName(this.state.props_name, this.props.input) !=
-          this.state.value
-      ) {
-        let value = this.props.input[this.state.props_name] || '';
+  // componentDidUpdate(prevProps, prevState) {
+  //   try {
+  //     if (
+  //       findArrayName(this.state.props_name, this.props.input) !=
+  //         findArrayName(this.state.props_name, prevProps.input) &&
+  //       findArrayName(this.state.props_name, this.props.input) !=
+  //         this.state.value
+  //     ) {
+  //       let value = this.props.input[this.state.props_name] || '';
 
-        this.setState({ value });
-      }
-    } catch (e) {}
+  //       this.setState({ value });
+  //     }
+  //   } catch (e) {}
 
-    if (this.props.value && prevProps.value != this.props.value) {
-      let value = this.props.value || '';
+  //   if (this.props.value && prevProps.value != this.props.value) {
+  //     let value = this.props.value || '';
 
-      this.setState({ value });
-    }
-  }
+  //     this.setState({ value });
+  //   }
+  // }
 
   handleInputChange = (value) => {
-    let data = value ? String(value) : '';
+    let data = value.id ? String(value.id) : '';
+    let label = value.name ? String(value.name) : '';
 
     this.props.setInput(this.state.props_name, data);
 
-    this.setState({ value: data });
+    this.setState({ value: label });
     this.setModalVisible(!this.state.modalVisible)
   };
 
@@ -91,8 +92,8 @@ class InputSelect extends Component {
           style={styles.outer}>
             <View style={[styles.card, this.props.cardStyle]}>
               {this.props.options.map((value) => (
-                <TouchableOpacity key={value.id} onPress={() => this.handleInputChange(value.nama)}>
-                  <Text style={this.props.itemStyle}>{value.nama}</Text>
+                <TouchableOpacity key={value.id} onPress={() => this.handleInputChange(value)}>
+                  <Text style={this.props.itemStyle}>{value.name}</Text>
                 </TouchableOpacity>
               ))}
             </View>
